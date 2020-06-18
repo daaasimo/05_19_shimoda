@@ -1,0 +1,99 @@
+<?php
+//var_dump($_POST);
+//exit();
+//txtファイルを読み込んで表示する
+$str = ''; // 出力用の空の文字列
+$file = fopen('data/data.csv', 'r+b'); // ファイルを開く(読み取りと書き出し)
+flock($file, LOCK_EX); // ファイルをロック
+if ($file) {
+    while ($line = fgets($file)) { // fgets()で1行ずつ取得→$lineに格納
+
+        while (!feof($file)) {
+            // trim() でホワイトスペースを除去して配列変数に格納
+            $results[] = trim(fgets($file));
+
+        $str .= "<tr><td>{$line}</td></tr>"; // 取得したデータを$strに入れる
+
+            if ($results[14] != 0) {  //アンケート結果が0でなければ集計
+                echo '<p>アンケートの集計結果：総数 ' . $results[14] . ' 件</p>';
+
+flock($file, LOCK_UN); // ロック解除
+fclose($file); // ファイル閉じる
+
+//男女の比率計算
+
+$male_rate   = round($results[0] / $results[14] * 100);
+$female_rate = round($results[1] / $results[14] * 100);
+ 
+echo '  <td>男性：' . $results[0] . '人 女性：' . $results[1] . '人</td>';
+echo '  <td>男性：' . $male_rate . '% 女性：' . $female_rate . '%</td>';
+
+  $age10_rate = round($results[2] / $results[14] * 100);
+  $age20_rate = round($results[3] / $results[14] * 100);
+  $age30_rate = round($results[4] / $results[14] * 100);
+  $age40_rate = round($results[5] / $results[14] * 100);
+  $age50_rate = round($results[6] / $results[14] * 100);
+  $age60_rate = round($results[7] / $results[14] * 100);
+
+echo '  <td>10代：' . $results[2] . '人<br>' .
+'20代：' . $results[3] . '人<br>' .
+'30代：' . $results[4] . '人<br>' .
+'40代：' . $results[5] . '人<br>' .
+'50代：' . $results[6] . '人<br>' .
+'60代以上：' . $results[7] . '人</td>' ;
+
+echo '  <td>10代：' . $age10_rate . '%<br>' .
+'20代：' . $age20_rate . '%<br>' .
+'30代：' . $age30_rate . '%<br>' .
+'40代：' . $age40_rate . '%<br>' .
+'50代：' . $age50_rate . '%<br>' .
+'60代：' . $age60_rate . '%</td>' ;
+
+$answer1_rate = round($results[8] / $results[14] * 100);
+$answer2_rate = round($results[9] / $results[14] * 100);
+$answer3_rate = round($results[10] / $results[14] * 100);
+$answer4_rate = round($results[11] / $results[14] * 100);
+$answer5_rate = round($results[12] / $results[14] * 100);
+$answer6_rate = round($results[13] / $results[14] * 100);
+
+echo '  <td>東京:' . $results[8] . '票<br>' .
+'大阪：' . $results[9] . ' 票<br>' .
+'沖縄：' . $results[10] . ' 票<br>' .
+'由布院：' . $results[11] . ' 票<br>' .
+'京都：' . $results[12] . ' 票<br>' .
+'大阪：' . $results[13] . ' 票</td>';
+
+} else {
+  // アンケートデータがない場合
+echo '  <p class="msg">表示できるようなアンケートデータがありません。</p>';
+}
+fclose($fp);
+echo '<p class="link"><a href="questionnaire1.php">アンケートページへ戻る</a></p>';
+
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一覧画面</title>
+</head>
+
+<body>
+        <fieldset>
+        <legend>アンケートフォーム（一覧画面）</legend>
+        <a href="input.php">入力画面</a>
+        <table>
+            <thead>
+     
+            </thead>
+            <tbody>
+                <?= $str ?>
+            </tbody>
+        </table>
+    </fieldset>
+</body>
+htm
+</html>
